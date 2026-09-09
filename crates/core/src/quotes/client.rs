@@ -40,10 +40,10 @@ use wealthfolio_market_data::{
     mic_to_currency, mic_to_exchange_name, yahoo_equity_provider_symbol_to_canonical,
     yahoo_exchange_to_mic, yahoo_suffix_to_mic, AlphaVantageProvider,
     AssetProfile as MarketAssetProfile, BoerseFrankfurtProvider, BondQuoteMetadata, DividendEvent,
-    ExchangeMap, FinnhubProvider, FixtureProvider, MarketDataAppProvider, MetalPriceApiProvider,
-    OpenFigiProvider, ProviderId, ProviderRegistry, Quote as MarketQuote, QuoteContext,
-    QuoteIdentifiers, ResolverChain, SearchResult as MarketSearchResult, SplitEvent,
-    UsTreasuryCalcProvider, YahooProvider,
+    ExchangeMap, FinnhubProvider, FixtureProvider, JustEtfProvider, MarketDataAppProvider,
+    MetalPriceApiProvider, OpenFigiProvider, ProviderId, ProviderRegistry,
+    Quote as MarketQuote, QuoteContext, QuoteIdentifiers, ResolverChain,
+    SearchResult as MarketSearchResult, SplitEvent, UsTreasuryCalcProvider, YahooProvider,
 };
 
 /// Market data error types.
@@ -297,6 +297,10 @@ impl MarketDataClient {
             DATA_SOURCE_BOERSE_FRANKFURT => {
                 // European bond pricing via Börse Frankfurt (no API key)
                 Ok(Some(Arc::new(BoerseFrankfurtProvider::new())))
+            }
+            DATA_SOURCE_JUST_ETF => {
+                // European ETF pricing from justETF.com (no API key)
+                Ok(Some(Arc::new(JustEtfProvider::new())))
             }
             _ => {
                 warn!("Unknown provider ID: {}", provider_id);
@@ -853,9 +857,11 @@ impl MarketDataClient {
             // Use provider source from profile, fallback to YAHOO for backwards compatibility
             data_source: profile.source.unwrap_or_else(|| "YAHOO".to_string()),
             notes: profile.description,
-            countries: profile
-                .country
-                .map(|c| format!("[{{\"name\":\"{}\",\"weight\":1}}]", c)),
+            countries: profile.countries.or_else(|| {
+                profile
+                    .country
+                    .map(|c| format!("[{{\"name\":\"{}\",\"weight\":1}}]", c))
+            }),
             sectors,
             industry: profile.industry,
             categories: None,

@@ -542,6 +542,7 @@ impl FinnhubProvider {
             website: response.weburl,
             description: response.description,
             country: response.country,
+            countries: None,
             employees: response.employee_total.map(|e| e as u64),
             logo_url: response.logo,
             market_cap: response.market_capitalization.map(|mc| mc * 1_000_000.0), // Finnhub returns in millions

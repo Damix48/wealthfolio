@@ -364,7 +364,27 @@ fn resolve_country_category(country: &str, categories: &[Category]) -> Option<St
         return Some(category.id.clone());
     }
 
-    map_country_to_region(country).map(String::from)
+    map_country_to_fallback_region(country)
+        .map(String::from)
+}
+
+fn map_country_to_fallback_region(country: &str) -> Option<&'static str> {
+    match country.to_lowercase().as_str() {
+        "united kingdom" | "uk" | "great britain" | "england" | "germany" | "deutschland"
+        | "france" | "switzerland" | "schweiz" | "netherlands" | "holland" | "spain"
+        | "españa" | "italy" | "italia" | "sweden" | "sverige" | "ireland" | "belgium"
+        | "denmark" | "danmark" | "norway" | "norge" | "finland" | "suomi" | "austria"
+        | "österreich" | "portugal" | "poland" | "polska" | "greece"
+        | "czech republic" | "czechia" | "russia" => Some("R10"),
+        "mexico" | "méxico" => Some("R2010"),
+        "brazil" | "brasil" | "argentina" | "chile" | "colombia" | "peru" => Some("R2040"),
+        "south korea" | "korea" | "대한민국" | "taiwan" | "臺灣" => Some("R3030"),
+        "singapore" | "india" | "भारत" | "indonesia" | "malaysia" | "thailand"
+        | "vietnam" | "philippines" => Some("R30"),
+        "new zealand" => Some("R50"),
+        "south africa" | "nigeria" | "egypt" => Some("R40"),
+        _ => None,
+    }
 }
 
 /// Maps country name to regions taxonomy category ID
@@ -376,53 +396,179 @@ fn resolve_country_category(country: &str, categories: &[Category]) -> Option<St
 /// itself, so it answers for spellings the seed does not carry rather than for
 /// the countries it does.
 fn map_country_to_region(country: &str) -> Option<&'static str> {
-    // Normalize country name
     let country_lower = country.to_lowercase();
 
     match country_lower.as_str() {
-        // ========== Countries with specific entries ==========
-        // North America
-        "united states" | "usa" | "us" => Some("country_US"),
-        "canada" => Some("country_CA"),
+        // ---------- Europe ----------
+        // Northern Europe (R1010)
+        "denmark" | "danmark" => Some("country_DK"),
+        "estonia" => Some("country_EE"),
+        "finland" | "suomi" => Some("country_FI"),
+        "united kingdom" | "uk" | "great britain" | "england" => Some("country_GB"),
+        "iceland" => Some("country_IS"),
+        "ireland" => Some("country_IE"),
+        "latvia" => Some("country_LV"),
+        "lithuania" => Some("country_LT"),
+        "norway" | "norge" => Some("country_NO"),
+        "sweden" | "sverige" => Some("country_SE"),
+        // Western Europe (R1020)
+        "austria" | "österreich" => Some("country_AT"),
+        "belgium" => Some("country_BE"),
+        "france" => Some("country_FR"),
+        "germany" | "deutschland" => Some("country_DE"),
+        "liechtenstein" => Some("country_LI"),
+        "luxembourg" => Some("country_LU"),
+        "monaco" => Some("country_MC"),
+        "netherlands" | "holland" => Some("country_NL"),
+        "switzerland" | "schweiz" => Some("country_CH"),
+        // Eastern Europe (R1030)
+        "belarus" => Some("country_BY"),
+        "bulgaria" => Some("country_BG"),
+        "czech republic" | "czechia" => Some("country_CZ"),
+        "hungary" => Some("country_HU"),
+        "poland" | "polska" => Some("country_PL"),
+        "romania" => Some("country_RO"),
+        "russia" | "russian federation" => Some("country_RU"),
+        "slovakia" => Some("country_SK"),
+        "ukraine" => Some("country_UA"),
+        // Southern Europe (R1040)
+        "albania" => Some("country_AL"),
+        "andorra" => Some("country_AD"),
+        "bosnia and herzegovina" => Some("country_BA"),
+        "croatia" => Some("country_HR"),
+        "gibraltar" => Some("country_GI"),
+        "greece" => Some("country_GR"),
+        "italy" | "italia" => Some("country_IT"),
+        "malta" => Some("country_MT"),
+        "montenegro" => Some("country_ME"),
+        "portugal" => Some("country_PT"),
+        "san marino" => Some("country_SM"),
+        "serbia" => Some("country_RS"),
+        "spain" | "españa" => Some("country_ES"),
+        "holy see" => Some("country_VA"),
 
-        // East Asia
-        "japan" | "日本" => Some("country_JP"),
+        // ---------- Americas ----------
+        // Northern America (R2010)
+        "bermuda" => Some("country_BM"),
+        "canada" => Some("country_CA"),
+        "greenland" => Some("country_GL"),
+        "mexico" | "méxico" => Some("country_MX"),
+        "saint pierre and miquelon" => Some("country_PM"),
+        "united states" | "usa" | "us" => Some("country_US"),
+        // Central America (R2020)
+        "belize" => Some("country_BZ"),
+        "costa rica" => Some("country_CR"),
+        "el salvador" => Some("country_SV"),
+        "guatemala" => Some("country_GT"),
+        "honduras" => Some("country_HN"),
+        "nicaragua" => Some("country_NI"),
+        "panama" => Some("country_PA"),
+        // Caribbean (R2030)
+        "bahamas" => Some("country_BS"),
+        "barbados" => Some("country_BB"),
+        "cayman islands" => Some("country_KY"),
+        "cuba" => Some("country_CU"),
+        "dominican republic" => Some("country_DO"),
+        "jamaica" => Some("country_JM"),
+        "puerto rico" => Some("country_PR"),
+        // South America (R2040)
+        "argentina" => Some("country_AR"),
+        "bolivia" => Some("country_BO"),
+        "brazil" | "brasil" => Some("country_BR"),
+        "chile" => Some("country_CL"),
+        "colombia" => Some("country_CO"),
+        "ecuador" => Some("country_EC"),
+        "paraguay" => Some("country_PY"),
+        "peru" => Some("country_PE"),
+        "suriname" => Some("country_SR"),
+        "uruguay" => Some("country_UY"),
+        "venezuela" => Some("country_VE"),
+
+        // ---------- Asia ----------
+        // Western Asia (R3010)
+        "armenia" => Some("country_AM"),
+        "azerbaijan" => Some("country_AZ"),
+        "bahrain" => Some("country_BH"),
+        "cyprus" => Some("country_CY"),
+        "georgia" => Some("country_GE"),
+        "iraq" => Some("country_IQ"),
+        "israel" => Some("country_IL"),
+        "jordan" => Some("country_JO"),
+        "kuwait" => Some("country_KW"),
+        "lebanon" => Some("country_LB"),
+        "oman" => Some("country_OM"),
+        "qatar" => Some("country_QA"),
+        "saudi arabia" => Some("country_SA"),
+        "syrian arab republic" | "syria" => Some("country_SY"),
+        "turkey" | "türkiye" => Some("country_TR"),
+        "united arab emirates" => Some("country_AE"),
+        "yemen" => Some("country_YE"),
+        // Central Asia (R3020)
+        "kazakhstan" => Some("country_KZ"),
+        "kyrgyzstan" => Some("country_KG"),
+        "tajikistan" => Some("country_TJ"),
+        "turkmenistan" => Some("country_TM"),
+        "uzbekistan" => Some("country_UZ"),
+        // Eastern Asia (R3030)
         "china" | "中国" => Some("country_CN"),
         "hong kong" | "香港" => Some("country_HK"),
+        "japan" | "日本" => Some("country_JP"),
+        "macao" => Some("country_MO"),
+        "mongolia" => Some("country_MN"),
+        "korea (south)" | "south korea" | "korea" | "대한민국" => Some("country_KR"),
+        "korea (north)" | "north korea" => Some("country_KP"),
+        "taiwan" | "臺灣" => Some("country_TW"),
+        // Southern Asia (R3040)
+        "bangladesh" => Some("country_BD"),
+        "india" | "भारत" => Some("country_IN"),
+        "iran" => Some("country_IR"),
+        "pakistan" => Some("country_PK"),
+        "sri lanka" => Some("country_LK"),
+        // South-eastern Asia (R3050)
+        "cambodia" => Some("country_KH"),
+        "indonesia" => Some("country_ID"),
+        "malaysia" => Some("country_MY"),
+        "philippines" => Some("country_PH"),
+        "singapore" => Some("country_SG"),
+        "thailand" => Some("country_TH"),
+        "vietnam" | "viet nam" => Some("country_VN"),
 
-        // Oceania
+        // ---------- Africa ----------
+        // Northern Africa (R4010)
+        "algeria" => Some("country_DZ"),
+        "egypt" => Some("country_EG"),
+        "libya" => Some("country_LY"),
+        "morocco" => Some("country_MA"),
+        "sudan" => Some("country_SD"),
+        "tunisia" => Some("country_TN"),
+        // Western Africa (R4020)
+        "ghana" => Some("country_GH"),
+        "nigeria" => Some("country_NG"),
+        "senegal" => Some("country_SN"),
+        // Eastern Africa (R4030)
+        "ethiopia" => Some("country_ET"),
+        "kenya" => Some("country_KE"),
+        "mauritius" => Some("country_MU"),
+        "rwanda" => Some("country_RW"),
+        "tanzania" => Some("country_TZ"),
+        "uganda" => Some("country_UG"),
+        "zambia" => Some("country_ZM"),
+        "zimbabwe" => Some("country_ZW"),
+        // Middle Africa (R4040)
+        "angola" => Some("country_AO"),
+        "cameroon" => Some("country_CM"),
+        // Southern Africa (R4050)
+        "botswana" => Some("country_BW"),
+        "lesotho" => Some("country_LS"),
+        "namibia" => Some("country_NA"),
+        "south africa" => Some("country_ZA"),
+        "eswatini" => Some("country_SZ"),
+
+        // ---------- Oceania ----------
+        // Australia and New Zealand (R5010)
         "australia" => Some("country_AU"),
+        "new zealand" => Some("country_NZ"),
 
-        // ========== Countries mapped to regional groups ==========
-        // Europe (R10)
-        "united kingdom" | "uk" | "great britain" | "england" | "germany" | "deutschland"
-        | "france" | "switzerland" | "schweiz" | "netherlands" | "holland" | "spain" | "españa"
-        | "italy" | "italia" | "sweden" | "sverige" | "ireland" | "belgium" | "denmark"
-        | "danmark" | "norway" | "norge" | "finland" | "suomi" | "austria" | "österreich"
-        | "portugal" | "poland" | "polska" | "greece" | "czech republic" | "czechia" | "russia" => {
-            Some("R10")
-        } // Europe
-
-        // North America (R2010) - countries without specific entries
-        "mexico" | "méxico" => Some("R2010"),
-
-        // South America (R2040)
-        "brazil" | "brasil" | "argentina" | "chile" | "colombia" | "peru" => Some("R2040"),
-
-        // East Asia (R3030) - countries without specific entries
-        "south korea" | "korea" | "대한민국" | "taiwan" | "臺灣" => Some("R3030"),
-
-        // Asia (R30) - other Asian countries
-        "singapore" | "india" | "भारत" | "indonesia" | "malaysia" | "thailand" | "vietnam"
-        | "philippines" => Some("R30"),
-
-        // Oceania (R50)
-        "new zealand" => Some("R50"),
-
-        // Africa (R40)
-        "south africa" | "nigeria" | "egypt" => Some("R40"),
-
-        // For unmapped countries, skip
         _ => None,
     }
 }
@@ -460,6 +606,7 @@ pub struct ClassificationInput {
     pub asset_classes: Vec<ClassWeight>,
     pub sectors: Vec<SectorWeight>,
     pub country: Option<String>,
+    pub countries: Vec<ProviderWeight>,
 }
 
 /// Raw provider profile fields used for taxonomy classification.
@@ -520,12 +667,10 @@ impl ClassificationInput {
 
         // Parse country: prefer JSON array (ETFs), fall back to single country (stocks)
         if let Some(json) = profile.countries_json {
-            if let Ok(countries) = serde_json::from_str::<Vec<serde_json::Value>>(json) {
-                input.country = countries
-                    .first()
-                    .and_then(|v| v.get("name"))
-                    .and_then(|v| v.as_str())
-                    .map(String::from);
+            let all_countries = parse_weighted_json(json);
+            input.countries = all_countries;
+            if let Some(first) = input.countries.first() {
+                input.country = Some(first.name.clone());
             }
         }
 
@@ -663,8 +808,16 @@ impl AutoClassificationService {
             }
         }
 
-        // 4. Classify region
-        if let Some(country) = &input.country {
+        // 4. Classify region — support multi-country ETF exposure
+        let region_assignments = if !input.countries.is_empty() && input.countries.len() > 1 {
+            let mut region_weights: BTreeMap<&'static str, f64> = BTreeMap::new();
+            for country_weight in &input.countries {
+                if let Some(region_id) = map_country_to_region(&country_weight.name) {
+                    *region_weights.entry(region_id).or_default() += country_weight.weight;
+                }
+            }
+            weights_to_basis_points(region_weights)
+        } else if let Some(country) = &input.country {
             let region_categories = self
                 .taxonomy_service
                 .get_taxonomy(REGIONS_TAXONOMY)
@@ -677,27 +830,29 @@ impl AutoClassificationService {
                 })
                 .map(|taxonomy| taxonomy.categories)
                 .unwrap_or_default();
-            let region_assignments = resolve_country_category(country, &region_categories)
+            resolve_country_category(country, &region_categories)
                 .map(|category_id| vec![(category_id, 10000)])
-                .unwrap_or_default();
-            let first_region = region_assignments
-                .first()
-                .map(|(category_id, _)| category_id.clone());
+                .unwrap_or_default()
+        } else {
+            Vec::new()
+        };
+        let first_region = region_assignments
+            .first()
+            .map(|(category_id, _)| category_id.clone());
 
-            match self
-                .replace_auto_taxonomy_assignments(asset_id, REGIONS_TAXONOMY, region_assignments)
-                .await
-            {
-                Ok(assigned_count) if assigned_count > 0 => {
-                    if let Some(category_id) = first_region {
-                        debug!("Auto-classified {} as {} in regions", asset_id, category_id);
-                        result.region = Some(category_id);
-                    }
+        match self
+            .replace_auto_taxonomy_assignments(asset_id, REGIONS_TAXONOMY, region_assignments)
+            .await
+        {
+            Ok(assigned_count) if assigned_count > 0 => {
+                if let Some(category_id) = first_region {
+                    debug!("Auto-classified {} as {} in regions", asset_id, category_id);
+                    result.region = Some(category_id);
                 }
-                Ok(_) => {}
-                Err(e) => {
-                    warn!("Failed to auto-classify {} regions: {}", asset_id, e);
-                }
+            }
+            Ok(_) => {}
+            Err(e) => {
+                warn!("Failed to auto-classify {} regions: {}", asset_id, e);
             }
         }
 
@@ -1095,7 +1250,7 @@ mod tests {
 
     #[test]
     fn test_map_country() {
-        // Specific country entries
+        // Specific country entries — each maps to individual country_XX key
         assert_eq!(map_country_to_region("United States"), Some("country_US"));
         assert_eq!(map_country_to_region("USA"), Some("country_US"));
         assert_eq!(map_country_to_region("Canada"), Some("country_CA"));
@@ -1104,20 +1259,52 @@ mod tests {
         assert_eq!(map_country_to_region("Hong Kong"), Some("country_HK"));
         assert_eq!(map_country_to_region("Australia"), Some("country_AU"));
 
-        // European countries -> Europe region (R10). This is the fallback only:
-        // resolve_country_category reaches country_GB/country_DE first whenever
-        // the regions taxonomy carries them, which the seed does.
-        assert_eq!(map_country_to_region("United Kingdom"), Some("R10"));
-        assert_eq!(map_country_to_region("Germany"), Some("R10"));
-        assert_eq!(map_country_to_region("France"), Some("R10"));
-        assert_eq!(map_country_to_region("Switzerland"), Some("R10"));
+        // European countries — each maps to its own country key
+        assert_eq!(map_country_to_region("United Kingdom"), Some("country_GB"));
+        assert_eq!(map_country_to_region("Germany"), Some("country_DE"));
+        assert_eq!(map_country_to_region("France"), Some("country_FR"));
+        assert_eq!(map_country_to_region("Switzerland"), Some("country_CH"));
+        assert_eq!(map_country_to_region("Netherlands"), Some("country_NL"));
+        assert_eq!(map_country_to_region("Spain"), Some("country_ES"));
+        assert_eq!(map_country_to_region("Italy"), Some("country_IT"));
+        assert_eq!(map_country_to_region("Sweden"), Some("country_SE"));
+        assert_eq!(map_country_to_region("Ireland"), Some("country_IE"));
+        assert_eq!(map_country_to_region("Denmark"), Some("country_DK"));
+        assert_eq!(map_country_to_region("Norway"), Some("country_NO"));
+        assert_eq!(map_country_to_region("Finland"), Some("country_FI"));
+        assert_eq!(map_country_to_region("Austria"), Some("country_AT"));
+        assert_eq!(map_country_to_region("Belgium"), Some("country_BE"));
+        assert_eq!(map_country_to_region("Poland"), Some("country_PL"));
+        assert_eq!(map_country_to_region("Portugal"), Some("country_PT"));
+        assert_eq!(map_country_to_region("Greece"), Some("country_GR"));
+        assert_eq!(map_country_to_region("Czech Republic"), Some("country_CZ"));
+        assert_eq!(map_country_to_region("Russia"), Some("country_RU"));
 
-        // South American countries -> South America region (R2040)
-        assert_eq!(map_country_to_region("Brazil"), Some("R2040"));
+        // Other countries — individual keys
+        assert_eq!(map_country_to_region("Brazil"), Some("country_BR"));
+        assert_eq!(map_country_to_region("Mexico"), Some("country_MX"));
+        assert_eq!(map_country_to_region("Argentina"), Some("country_AR"));
+        assert_eq!(map_country_to_region("Singapore"), Some("country_SG"));
+        assert_eq!(map_country_to_region("India"), Some("country_IN"));
+        assert_eq!(map_country_to_region("South Korea"), Some("country_KR"));
+        assert_eq!(map_country_to_region("Taiwan"), Some("country_TW"));
+        assert_eq!(map_country_to_region("South Africa"), Some("country_ZA"));
+        assert_eq!(map_country_to_region("New Zealand"), Some("country_NZ"));
 
-        // Asian countries -> Asia region (R30)
-        assert_eq!(map_country_to_region("Singapore"), Some("R30"));
-        assert_eq!(map_country_to_region("India"), Some("R30"));
+        // JustETF country names — exact casing from the API
+        assert_eq!(map_country_to_region("United Kingdom"), Some("country_GB"));
+        assert_eq!(map_country_to_region("France"), Some("country_FR"));
+        assert_eq!(map_country_to_region("Germany"), Some("country_DE"));
+        assert_eq!(map_country_to_region("Switzerland"), Some("country_CH"));
+        assert_eq!(map_country_to_region("Netherlands"), Some("country_NL"));
+        assert_eq!(map_country_to_region("Spain"), Some("country_ES"));
+        assert_eq!(map_country_to_region("Italy"), Some("country_IT"));
+        assert_eq!(map_country_to_region("Sweden"), Some("country_SE"));
+        assert_eq!(map_country_to_region("Australia"), Some("country_AU"));
+        assert_eq!(map_country_to_region("Japan"), Some("country_JP"));
+        assert_eq!(map_country_to_region("Canada"), Some("country_CA"));
+        assert_eq!(map_country_to_region("Hong Kong"), Some("country_HK"));
+        assert_eq!(map_country_to_region("Singapore"), Some("country_SG"));
 
         // Unknown
         assert_eq!(map_country_to_region("Unknown Country"), None);
@@ -1174,6 +1361,54 @@ mod tests {
             ..Default::default()
         });
         assert_eq!(input.country, None);
+    }
+
+    #[test]
+    fn test_parse_countries_json() {
+        let json = r#"[
+            {"name":"Japan","weight":0.20},
+            {"name":"United Kingdom","weight":0.10},
+            {"name":"Germany","weight":0.07},
+            {"name":"France","weight":0.06}
+        ]"#;
+        let input = ClassificationInput::from_provider_profile(ProviderProfileClassification {
+            quote_type: Some("ETF"),
+            countries_json: Some(json),
+            ..Default::default()
+        });
+
+        assert_eq!(input.countries.len(), 4);
+        assert_eq!(input.countries[0].name, "Japan");
+        assert_eq!(input.countries[0].weight, 0.20);
+        assert_eq!(input.countries[3].name, "France");
+        assert_eq!(input.countries[3].weight, 0.06);
+        // First country becomes the primary
+        assert_eq!(input.country, Some("Japan".to_string()));
+    }
+
+    #[test]
+    fn test_parse_single_country_from_countries_json() {
+        let json = r#"[{"name":"Japan","weight":1.0}]"#;
+        let input = ClassificationInput::from_provider_profile(ProviderProfileClassification {
+            quote_type: Some("ETF"),
+            countries_json: Some(json),
+            ..Default::default()
+        });
+
+        assert_eq!(input.countries.len(), 1);
+        assert_eq!(input.country, Some("Japan".to_string()));
+    }
+
+    #[test]
+    fn test_countries_json_fallback_to_single_country() {
+        let input = ClassificationInput::from_provider_profile(ProviderProfileClassification {
+            quote_type: Some("EQUITY"),
+            country: Some("United States"),
+            ..Default::default()
+        });
+
+        assert!(input.countries.is_empty());
+        assert_eq!(input.country, Some("United States".to_string()));
     }
 
     #[tokio::test]

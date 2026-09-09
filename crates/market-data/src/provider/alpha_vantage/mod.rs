@@ -436,6 +436,7 @@ impl EtfProfileResponse {
             website: None,
             description: None,
             country: None, // ETF_PROFILE doesn't include country
+            countries: None,
             employees: None,
             logo_url: None,
             market_cap: None,
@@ -499,6 +500,7 @@ impl CompanyOverviewResponse {
                     .map(str::to_string)
                     .unwrap_or_else(|| c.to_string())
             }),
+            countries: None,
             employees: None, // Alpha Vantage doesn't provide employee count
             logo_url: None,
             market_cap: Self::parse_f64(&self.market_capitalization),

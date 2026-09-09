@@ -8780,6 +8780,7 @@ dependencies = [
  "reqwest 0.12.28",
  "rust_decimal",
  "rust_decimal_macros",
+ "scraper",
  "serde",
  "serde_json",
  "thiserror 2.0.18",

@@ -117,6 +117,18 @@ impl ProviderCapabilities {
                     "No API key".to_string(),
                 ],
             }),
+            "JUST_ETF" => Some(Self {
+                instruments: "ETFs".to_string(),
+                coverage: "Global (ISIN-based)".to_string(),
+                features: vec![
+                    "Real-time".to_string(),
+                    "Historical".to_string(),
+                    "Search".to_string(),
+                    "Profiles".to_string(),
+                    "Dividends".to_string(),
+                    "No API key".to_string(),
+                ],
+            }),
             "CUSTOM_SCRAPER" => Some(Self {
                 instruments: "Any".to_string(),
                 coverage: "User-defined".to_string(),

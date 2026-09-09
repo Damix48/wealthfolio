@@ -64,6 +64,11 @@ pub struct AssetProfile {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub country: Option<String>,
 
+    /// Country weightings as JSON array for ETFs/Mutual Funds
+    /// Format: [{"name": "United States", "weight": 0.60}, {"name": "Japan", "weight": 0.20}]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub countries: Option<String>,
+
     /// Number of full-time employees
     #[serde(skip_serializing_if = "Option::is_none")]
     pub employees: Option<u64>,

@@ -256,6 +256,26 @@ impl Resolver for RulesResolver {
             }));
         }
 
+        // JUST_ETF: resolve ISIN from identifiers or ticker
+        if provider.as_ref() == "JUST_ETF" {
+            let isin = context.identifiers.isin.as_deref().or_else(|| {
+                match &context.instrument {
+                    InstrumentId::Equity { ticker, .. }
+                        if crate::provider::just_etf::looks_like_isin(ticker) =>
+                    {
+                        Some(ticker.as_ref())
+                    }
+                    _ => None,
+                }
+            })?;
+            return Some(Ok(ResolvedInstrument {
+                instrument: ProviderInstrument::EquitySymbol {
+                    symbol: Arc::from(isin),
+                },
+                source: ResolutionSource::Rules,
+            }));
+        }
+
         let (instrument, source) = match &context.instrument {
             InstrumentId::Equity { ticker, mic } => self.resolve_equity(ticker, mic, provider)?,
 
