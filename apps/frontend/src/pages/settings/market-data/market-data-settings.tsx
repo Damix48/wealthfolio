@@ -5,7 +5,7 @@ import {
   getProviderName,
   getProviderInstruments,
 } from "@/lib/provider-labels";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -46,7 +46,12 @@ import { ResetProviderHistoryDialog } from "@/pages/asset/reset-provider-history
 import { SettingsList, SettingsListMedia, SettingsListRow } from "@/components/settings-list";
 import { SettingsHeader } from "../settings-header";
 
-import { getAssets, getSecret, type MarketDataProviderSetting } from "@/adapters";
+import {
+  getAssets,
+  getSecret,
+  updateSettings as updateAppSettings,
+  type MarketDataProviderSetting,
+} from "@/adapters";
 import {
   useRecalculatePortfolioMutation,
   useUpdatePortfolioMutation,
@@ -62,6 +67,8 @@ import { cn } from "@/lib/utils";
 import type { Asset } from "@/lib/types";
 import type { CustomProviderWithSources } from "@/lib/types/custom-provider";
 import { ActionConfirm, useDateFormatting, Spinner } from "@wealthfolio/ui";
+import { useSettingsContext } from "@/lib/settings-provider";
+import { toast } from "@wealthfolio/ui/components/ui/use-toast";
 import {
   Collapsible,
   CollapsibleContent,
@@ -801,6 +808,30 @@ export default function MarketDataSettingsPage() {
   const [editingProvider, setEditingProvider] = useState<CustomProviderWithSources | undefined>();
   const showHealthBanner = searchParams.get("healthContext") === "marketData";
 
+  const { settings } = useSettingsContext();
+  const queryClient = useQueryClient();
+  const updateAppSettingsMutation = useMutation({
+    mutationFn: updateAppSettings,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.SETTINGS] });
+      toast({ title: t("settings:market_data_page.profile_enrichment_saved"), variant: "success" });
+    },
+    onError: () => {
+      toast({
+        title: t("settings:market_data_page.profile_enrichment_save_error"),
+        variant: "destructive",
+      });
+    },
+  });
+
+  const profileEnrichmentOptions = [
+    { value: 24, label: t("settings:market_data_page.profile_enrichment_every_day") },
+    { value: 72, label: t("settings:market_data_page.profile_enrichment_every_3_days") },
+    { value: 168, label: t("settings:market_data_page.profile_enrichment_every_7_days") },
+    { value: 336, label: t("settings:market_data_page.profile_enrichment_every_14_days") },
+    { value: 720, label: t("settings:market_data_page.profile_enrichment_every_30_days") },
+  ];
+
   // Providers that are on are listed in fetch order; the rest wait in the catalog.
   // CUSTOM_SCRAPER only carries the custom providers' sync errors.
   const { listedProviders, activeProviders, availableProviders, customScraperErrors } =
@@ -1086,6 +1117,38 @@ export default function MarketDataSettingsPage() {
           >
             {t("common:clear")}
           </Button>
+        </div>
+      )}
+
+      {settings && (
+        <div className="border-border rounded-lg border p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-medium">
+                {t("settings:market_data_page.profile_enrichment")}
+              </h3>
+              <p className="text-muted-foreground text-xs">
+                {t("settings:market_data_page.profile_enrichment_subtitle")}
+              </p>
+            </div>
+            <select
+              className="border-input bg-background text-foreground h-9 w-44 rounded-md border px-3 py-1 text-sm"
+              value={settings.profileEnrichmentIntervalHours}
+              onChange={(e) => {
+                if (!settings) return;
+                updateAppSettingsMutation.mutate({
+                  ...settings,
+                  profileEnrichmentIntervalHours: Number(e.target.value),
+                });
+              }}
+            >
+              {profileEnrichmentOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 

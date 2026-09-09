@@ -1082,6 +1082,7 @@ export interface Settings {
   autoUpdateCheckEnabled: boolean;
   menuBarVisible: boolean;
   syncEnabled: boolean;
+  profileEnrichmentIntervalHours: number;
 }
 
 export interface SettingsContextType {

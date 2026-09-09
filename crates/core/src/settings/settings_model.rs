@@ -58,6 +58,7 @@ pub struct Settings {
     /// Versioned dashboard preferences; the frontend validates the layout schema.
     #[serde(default)]
     pub insights_overview_layout: Option<serde_json::Map<String, serde_json::Value>>,
+    pub profile_enrichment_interval_hours: i32,
 }
 
 fn default_theme_id() -> String {
@@ -88,6 +89,7 @@ impl Default for Settings {
             restore_reconnect_required: false,
             default_return_metric: "twr".to_string(),
             insights_overview_layout: None,
+            profile_enrichment_interval_hours: 168,
         }
     }
 }
@@ -112,6 +114,7 @@ pub struct SettingsUpdate {
     pub sync_enabled: Option<bool>,
     pub default_return_metric: Option<String>,
     pub insights_overview_layout: Option<serde_json::Map<String, serde_json::Value>>,
+    pub profile_enrichment_interval_hours: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

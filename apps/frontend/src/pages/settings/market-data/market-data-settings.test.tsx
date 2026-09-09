@@ -30,6 +30,11 @@ vi.mock("@/adapters", () => ({
   openUrlInBrowser: hookMocks.openUrlInBrowser,
   getAssets: hookMocks.getAssets,
   getSecret: hookMocks.getSecret,
+  updateSettings: vi.fn(),
+}));
+
+vi.mock("@/lib/settings-provider", () => ({
+  useSettingsContext: () => ({ settings: { profileEnrichmentIntervalHours: 168 } }),
 }));
 
 vi.mock("@wealthfolio/ui", async (importOriginal) => ({

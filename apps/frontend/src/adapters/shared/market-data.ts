@@ -89,6 +89,15 @@ export const deleteAsset = async (id: string): Promise<void> => {
   }
 };
 
+export const enrichAssetProfile = async (assetId: string): Promise<Asset> => {
+  try {
+    return await invoke<Asset>("enrich_asset_profile", { assetId });
+  } catch (error) {
+    logger.error("Error enriching asset profile.");
+    throw error;
+  }
+};
+
 export const updateQuoteMode = async (assetId: string, quoteMode: string): Promise<Asset> => {
   try {
     return await invoke<Asset>("update_quote_mode", { id: assetId, quoteMode });

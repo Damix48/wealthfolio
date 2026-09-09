@@ -216,6 +216,7 @@ export {
   createAsset,
   deleteAsset,
   deleteQuote,
+  enrichAssetProfile,
   fetchDividends,
   getAssetProfile,
   getAssets,

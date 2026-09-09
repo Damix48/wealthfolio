@@ -1000,7 +1000,18 @@
       "etfs": "ETF",
       "funds": "基金",
       "bonds": "債券"
-    }
+    },
+    "priority_decrease": "減少優先順序數值",
+    "priority_increase": "增加優先順序數值",
+    "profile_enrichment": "資產概況更新",
+    "profile_enrichment_subtitle": "從市場資料來源重新整理資產分類（產業、地區、資產類別）的頻率。變更將在應用程式重新啟動後生效。",
+    "profile_enrichment_every_day": "每天",
+    "profile_enrichment_every_3_days": "每 3 天",
+    "profile_enrichment_every_7_days": "每 7 天",
+    "profile_enrichment_every_14_days": "每 14 天",
+    "profile_enrichment_every_30_days": "每 30 天",
+    "profile_enrichment_saved": "資產概況更新頻率已儲存。",
+    "profile_enrichment_save_error": "無法儲存資產概況更新頻率。"
   },
   "addon_permission_none_detected": "未偵測到資料存取權限。此擴充功能對系統的存取權限似乎很少。",
   "addon_permission_list_title": "權限",
