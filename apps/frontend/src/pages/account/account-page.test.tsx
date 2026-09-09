@@ -510,6 +510,7 @@ function createSettings(): Settings {
     autoUpdateCheckEnabled: true,
     menuBarVisible: true,
     syncEnabled: false,
+    profileEnrichmentIntervalHours: 0,
   };
 }
 

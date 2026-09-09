@@ -881,7 +881,16 @@
     "imported_count_one": "{{count}} importiert",
     "imported_count_other": "{{count}} importiert",
     "failed_count_one": "{{count}} fehlgeschlagen",
-    "failed_count_other": "{{count}} fehlgeschlagen"
+    "failed_count_other": "{{count}} fehlgeschlagen",
+    "profile_enrichment": "Profildaten aktualisieren",
+    "profile_enrichment_subtitle": "Häufigkeit der Aktualisierung von Anlageklassifikationen (Branchen, Regionen, Anlageklassen) von Marktdatenanbietern. Änderungen werden nach Neustart wirksam.",
+    "profile_enrichment_every_day": "Täglich",
+    "profile_enrichment_every_3_days": "Alle 3 Tage",
+    "profile_enrichment_every_7_days": "Alle 7 Tage",
+    "profile_enrichment_every_14_days": "Alle 14 Tage",
+    "profile_enrichment_every_30_days": "Alle 30 Tage",
+    "profile_enrichment_saved": "Profildaten-Aktualisierungshäufigkeit gespeichert.",
+    "profile_enrichment_save_error": "Fehler beim Speichern der Profildaten-Aktualisierungshäufigkeit."
   },
   "addon_permission_none_detected": "Keine Datenzugriffsberechtigungen erkannt. Dieses Add-on scheint minimalen Systemzugriff zu haben.",
   "addon_permission_list_title": "Berechtigungen",

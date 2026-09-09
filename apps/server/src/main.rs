@@ -17,6 +17,7 @@ use api::{app_router, security_headers};
 use axum::middleware;
 use config::Config;
 use main_lib::{build_state, init_tracing};
+use wealthfolio_core::settings::SettingsServiceTrait;
 use tower_http::services::{ServeDir, ServeFile};
 #[cfg(feature = "device-sync")]
 use tracing::{info, warn};
@@ -118,6 +119,22 @@ async fn main() -> anyhow::Result<()> {
             quote_svc,
             std::time::Duration::from_secs(120),
             std::time::Duration::from_secs(6 * 3600),
+        )
+        .await;
+    });
+
+    // Start periodic profile enrichment (configurable interval, 5min initial delay)
+    let profile_enrich_interval_hours = state
+        .settings_service
+        .get_settings()
+        .map(|s| s.profile_enrichment_interval_hours.max(1))
+        .unwrap_or(168);
+    let enrich_svc = state.asset_service.clone();
+    tokio::spawn(async move {
+        wealthfolio_core::assets::run_periodic_profile_enrichment(
+            enrich_svc,
+            std::time::Duration::from_secs(300),
+            std::time::Duration::from_secs(profile_enrich_interval_hours as u64 * 3600),
         )
         .await;
     });

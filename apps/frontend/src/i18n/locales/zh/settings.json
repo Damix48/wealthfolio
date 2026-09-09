@@ -981,7 +981,16 @@
     "review_first_rows_other": "查看 CSV 数据的前 {{count}} 行",
     "import_quotes_count_other": "导入 {{count}} 条报价",
     "imported_count_other": "已导入 {{count}} 条",
-    "failed_count_other": "失败 {{count}} 条"
+    "failed_count_other": "失败 {{count}} 条",
+    "profile_enrichment": "档案更新",
+    "profile_enrichment_subtitle": "从市场数据提供商刷新资产分类（行业、地区、资产类别）的频率。更改将在应用重启后生效。",
+    "profile_enrichment_every_day": "每天",
+    "profile_enrichment_every_3_days": "每 3 天",
+    "profile_enrichment_every_7_days": "每 7 天",
+    "profile_enrichment_every_14_days": "每 14 天",
+    "profile_enrichment_every_30_days": "每 30 天",
+    "profile_enrichment_saved": "档案更新频率已保存。",
+    "profile_enrichment_save_error": "保存档案更新频率失败。"
   },
   "addon_permission_none_detected": "未检测到数据访问权限。此插件似乎对系统的访问权限极少。",
   "addon_permission_list_title": "权限",

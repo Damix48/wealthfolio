@@ -993,7 +993,16 @@
     "imported_count_one": "{{count}} imported",
     "imported_count_other": "{{count}} imported",
     "failed_count_one": "{{count}} failed",
-    "failed_count_other": "{{count}} failed"
+    "failed_count_other": "{{count}} failed",
+    "profile_enrichment": "Profile Enrichment",
+    "profile_enrichment_subtitle": "How often asset classifications (industries, regions, asset classes) are refreshed from market data providers. Changes take effect after app restart.",
+    "profile_enrichment_every_day": "Every day",
+    "profile_enrichment_every_3_days": "Every 3 days",
+    "profile_enrichment_every_7_days": "Every 7 days",
+    "profile_enrichment_every_14_days": "Every 14 days",
+    "profile_enrichment_every_30_days": "Every 30 days",
+    "profile_enrichment_saved": "Profile enrichment frequency updated.",
+    "profile_enrichment_save_error": "Failed to update profile enrichment frequency."
   },
   "addon_permission_none_detected": "No data access permissions detected. This addon appears to have minimal system access.",
   "addon_permission_list_title": "Permissions",

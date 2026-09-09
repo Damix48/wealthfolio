@@ -16,6 +16,7 @@ pub struct Settings {
     pub menu_bar_visible: bool,
     pub sync_enabled: bool,
     pub default_return_metric: String,
+    pub profile_enrichment_interval_hours: i32,
 }
 
 impl Default for Settings {
@@ -32,6 +33,7 @@ impl Default for Settings {
             menu_bar_visible: true,
             sync_enabled: true,
             default_return_metric: "twr".to_string(),
+            profile_enrichment_interval_hours: 168,
         }
     }
 }
@@ -50,6 +52,7 @@ pub struct SettingsUpdate {
     pub menu_bar_visible: Option<bool>,
     pub sync_enabled: Option<bool>,
     pub default_return_metric: Option<String>,
+    pub profile_enrichment_interval_hours: Option<i32>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]

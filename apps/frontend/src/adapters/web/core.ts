@@ -154,6 +154,7 @@ export const COMMANDS: CommandMap = {
   get_asset_logo: { method: "GET", path: "/assets/logo" },
   upsert_asset_logo: { method: "PUT", path: "/assets/logo" },
   delete_asset_logo: { method: "DELETE", path: "/assets/logo" },
+  enrich_asset_profile: { method: "POST", path: "/assets/profile" },
   // Market data
   search_symbol: { method: "GET", path: "/market-data/search" },
   resolve_symbol_quote: { method: "GET", path: "/market-data/resolve-currency" },
@@ -1004,6 +1005,11 @@ export const invoke = async <T>(command: string, payload?: Record<string, unknow
     case "delete_asset": {
       const { id } = payload as { id: string };
       url += `/${encodeURIComponent(id)}`;
+      break;
+    }
+    case "enrich_asset_profile": {
+      const { assetId } = payload as { assetId: string };
+      url += `/${encodeURIComponent(assetId)}/enrich`;
       break;
     }
     case "calculate_deposits_for_contribution_limit": {

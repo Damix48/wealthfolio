@@ -216,6 +216,22 @@ mod desktop {
             .await;
         });
 
+        // Start periodic profile enrichment (configurable interval, 5min initial delay)
+        let profile_enrich_interval_hours = context
+            .settings_service
+            .get_settings()
+            .map(|s| s.profile_enrichment_interval_hours.max(1))
+            .unwrap_or(168);
+        let periodic_enrich_service = Arc::clone(&context.asset_service);
+        tauri::async_runtime::spawn(async move {
+            wealthfolio_core::assets::run_periodic_profile_enrichment(
+                periodic_enrich_service,
+                std::time::Duration::from_secs(300),
+                std::time::Duration::from_secs(profile_enrich_interval_hours as u64 * 3600),
+            )
+            .await;
+        });
+
         // Start background device sync engine (self-skips when device is not READY).
         #[cfg(feature = "device-sync")]
         {
@@ -583,6 +599,7 @@ pub fn run() {
             commands::asset_logo::list_asset_logos,
             commands::asset_logo::upsert_asset_logo,
             commands::asset_logo::delete_asset_logo,
+            commands::asset::enrich_asset_profile,
             // Alternative asset commands
             commands::alternative_assets::create_alternative_asset,
             commands::alternative_assets::update_alternative_asset_valuation,

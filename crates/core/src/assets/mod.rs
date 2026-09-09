@@ -14,6 +14,7 @@ mod assets_service;
 mod assets_traits;
 mod auto_classification;
 mod classification_service;
+mod profile_scheduler;
 
 #[cfg(test)]
 mod assets_model_tests;
@@ -58,3 +59,4 @@ pub use auto_classification::{
 pub use classification_service::{
     AssetClassificationService, AssetClassifications, CategoryWithWeight,
 };
+pub use profile_scheduler::run_periodic_profile_enrichment;

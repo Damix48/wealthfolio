@@ -4,7 +4,7 @@ use crate::{error::ApiResult, main_lib::AppState};
 use axum::{
     extract::{Path, Query, State},
     http::StatusCode,
-    routing::{delete, get, put},
+    routing::{delete, get, post, put},
     Json, Router,
 };
 use wealthfolio_core::assets::{
@@ -110,12 +110,24 @@ async fn delete_asset_logo(
     Ok(StatusCode::NO_CONTENT)
 }
 
+async fn enrich_asset_profile(
+    State(state): State<Arc<AppState>>,
+    Path(id): Path<String>,
+) -> ApiResult<Json<CoreAsset>> {
+    let asset = state
+        .asset_service
+        .enrich_asset_profile(&id)
+        .await?;
+    Ok(Json(asset))
+}
+
 pub fn router() -> Router<Arc<AppState>> {
     Router::new()
         .route("/assets", get(list_assets).post(create_asset))
         .route("/assets/{id}", delete(delete_asset))
         .route("/assets/profile", get(get_asset_profile))
         .route("/assets/profile/{id}", put(update_asset_profile))
+        .route("/assets/profile/{id}/enrich", post(enrich_asset_profile))
         .route("/assets/pricing-mode/{id}", put(update_quote_mode))
         .route("/assets/logos", get(list_asset_logos))
         .route(

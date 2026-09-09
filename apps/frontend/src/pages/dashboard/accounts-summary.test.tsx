@@ -115,6 +115,7 @@ const mockSettings: Settings = {
   autoUpdateCheckEnabled: true,
   menuBarVisible: true,
   syncEnabled: false,
+  profileEnrichmentIntervalHours: 0,
 };
 
 function createAccount(overrides: Partial<Account>): Account {

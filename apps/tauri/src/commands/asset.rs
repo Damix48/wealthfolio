@@ -62,6 +62,18 @@ pub async fn create_asset(
 }
 
 #[tauri::command]
+pub async fn enrich_asset_profile(
+    asset_id: String,
+    state: State<'_, Arc<ServiceContext>>,
+) -> Result<Asset, String> {
+    state
+        .asset_service()
+        .enrich_asset_profile(&asset_id)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
 pub async fn delete_asset(id: String, state: State<'_, Arc<ServiceContext>>) -> Result<(), String> {
     // Domain events handle quote sync state cleanup automatically
     state

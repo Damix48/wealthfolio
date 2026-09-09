@@ -1017,7 +1017,16 @@
     "imported_count_many": "{{count}} importées",
     "failed_count_one": "{{count}} échouée",
     "failed_count_other": "{{count}} échouées",
-    "failed_count_many": "{{count}} échouées"
+    "failed_count_many": "{{count}} échouées",
+    "profile_enrichment": "Mise à jour du profil",
+    "profile_enrichment_subtitle": "Fréquence de mise à jour des classifications d'actifs (secteurs, régions, classes) depuis les fournisseurs de données. Les modifications prennent effet après redémarrage.",
+    "profile_enrichment_every_day": "Chaque jour",
+    "profile_enrichment_every_3_days": "Tous les 3 jours",
+    "profile_enrichment_every_7_days": "Tous les 7 jours",
+    "profile_enrichment_every_14_days": "Tous les 14 jours",
+    "profile_enrichment_every_30_days": "Tous les 30 jours",
+    "profile_enrichment_saved": "Fréquence de mise à jour du profil enregistrée.",
+    "profile_enrichment_save_error": "Échec de l'enregistrement de la fréquence de mise à jour du profil."
   },
   "addon_permission_none_detected": "Aucune permission d’accès aux données détectée. Cette extension semble avoir un accès système minimal.",
   "addon_permission_list_title": "Permissions",

@@ -1,4 +1,4 @@
-import { useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Badge } from "@wealthfolio/ui/components/ui/badge";
 import { Button } from "@wealthfolio/ui/components/ui/button";
 import { Icons } from "@wealthfolio/ui/components/ui/icons";
@@ -12,7 +12,7 @@ import { Link, useSearchParams } from "react-router-dom";
 
 import { SettingsHeader } from "../settings-header";
 
-import { getSecret, type MarketDataProviderSetting } from "@/adapters";
+import { getSecret, type MarketDataProviderSetting, updateSettings } from "@/adapters";
 import {
   useRecalculatePortfolioMutation,
   useUpdatePortfolioMutation,
@@ -26,6 +26,8 @@ import { QueryKeys } from "@/lib/query-keys";
 import type { CustomProviderWithSources } from "@/lib/types/custom-provider";
 import { cn } from "@/lib/utils";
 import { ActionConfirm, useDateFormatting } from "@wealthfolio/ui";
+import { useSettingsContext } from "@/lib/settings-provider";
+import { toast } from "@wealthfolio/ui/components/ui/use-toast";
 import {
   Collapsible,
   CollapsibleContent,
@@ -612,7 +614,7 @@ export default function MarketDataSettingsPage() {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
   const { data: providers, isLoading, error } = useMarketDataProviderSettings();
-  const { mutate: updateSettings } = useUpdateMarketDataProviderSettings();
+  const { mutate: updateMarketDataSettings } = useUpdateMarketDataProviderSettings();
   const { mutate: updatePortfolio, isPending: isUpdating } = useUpdatePortfolioMutation();
   const { mutate: recalculatePortfolio, isPending: isRecalculating } =
     useRecalculatePortfolioMutation();
@@ -626,6 +628,27 @@ export default function MarketDataSettingsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
   const showHealthBanner = searchParams.get("healthContext") === "marketData";
+
+  const { settings } = useSettingsContext();
+  const queryClient = useQueryClient();
+  const updateAppSettingsMutation = useMutation({
+    mutationFn: updateSettings,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.SETTINGS] });
+      toast({ title: t("settings:market_data_page.profile_enrichment_saved"), variant: "success" });
+    },
+    onError: () => {
+      toast({ title: t("settings:market_data_page.profile_enrichment_save_error"), variant: "destructive" });
+    },
+  });
+
+  const profileEnrichmentOptions = [
+    { value: 24, label: t("settings:market_data_page.profile_enrichment_every_day") },
+    { value: 72, label: t("settings:market_data_page.profile_enrichment_every_3_days") },
+    { value: 168, label: t("settings:market_data_page.profile_enrichment_every_7_days") },
+    { value: 336, label: t("settings:market_data_page.profile_enrichment_every_14_days") },
+    { value: 720, label: t("settings:market_data_page.profile_enrichment_every_30_days") },
+  ];
 
   // Split providers into built-in providers and the CUSTOM_SCRAPER aggregate
   const { builtinProviders, customScraperErrors } = useMemo(() => {
@@ -663,7 +686,7 @@ export default function MarketDataSettingsPage() {
     const provider = providers?.find((p) => p.id === providerId);
     if (!provider) return;
 
-    updateSettings({
+    updateMarketDataSettings({
       providerId,
       priority: settingsToUpdate.priority ?? provider.priority,
       enabled: settingsToUpdate.enabled ?? provider.enabled,
@@ -885,6 +908,38 @@ export default function MarketDataSettingsPage() {
           >
             {t("settings:health_banner_clear")}
           </Button>
+        </div>
+      )}
+
+      {settings && (
+        <div className="border-border rounded-lg border p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="space-y-0.5">
+              <h3 className="text-sm font-medium">
+                {t("settings:market_data_page.profile_enrichment")}
+              </h3>
+              <p className="text-muted-foreground text-xs">
+                {t("settings:market_data_page.profile_enrichment_subtitle")}
+              </p>
+            </div>
+            <select
+              className="border-input bg-background text-foreground h-9 w-44 rounded-md border px-3 py-1 text-sm"
+              value={settings.profileEnrichmentIntervalHours}
+              onChange={(e) => {
+                if (!settings) return;
+                updateAppSettingsMutation.mutate({
+                  ...settings,
+                  profileEnrichmentIntervalHours: Number(e.target.value),
+                });
+              }}
+            >
+              {profileEnrichmentOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       )}
 
