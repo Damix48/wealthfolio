@@ -62,6 +62,16 @@ pub async fn create_asset(payload: NewAsset, state: ProfileAccess) -> Result<Ass
 }
 
 #[tauri::command]
+pub async fn enrich_asset_profile(asset_id: String, state: ProfileAccess) -> Result<Asset, String> {
+    let context = state.context()?;
+    context
+        .asset_service()
+        .enrich_asset_profile(&asset_id)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+#[tauri::command]
 pub async fn delete_asset(id: String, state: ProfileAccess) -> Result<(), String> {
     let context = state.context()?;
     // Domain events handle quote sync state cleanup automatically

@@ -27,6 +27,11 @@ const hookMocks = vi.hoisted(() => ({
 vi.mock("@/adapters", () => ({
   getAssets: hookMocks.getAssets,
   getSecret: hookMocks.getSecret,
+  updateSettings: vi.fn(),
+}));
+
+vi.mock("@/lib/settings-provider", () => ({
+  useSettingsContext: () => ({ settings: { profileEnrichmentIntervalHours: 168 } }),
 }));
 
 vi.mock("@wealthfolio/ui", async (importOriginal) => ({

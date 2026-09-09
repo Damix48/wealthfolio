@@ -1,5 +1,11 @@
 import { isExpiredOptionAsset } from "./asset-utils";
-import { createActivity, getAssetHoldings, getAssetLots, searchActivities } from "@/adapters";
+import {
+  createActivity,
+  enrichAssetProfile,
+  getAssetHoldings,
+  getAssetLots,
+  searchActivities,
+} from "@/adapters";
 import { ActionPalette, type ActionPaletteGroup } from "@/components/action-palette";
 import { AssetLogoDialog } from "@/components/asset-logo/asset-logo-dialog";
 import { EditableTickerAvatar } from "@/components/asset-logo/editable-ticker-avatar";
@@ -553,6 +559,19 @@ export const AssetProfilePage = () => {
   const syncMarketDataMutation = useSyncMarketDataMutation(true);
   const updateMarketDataMutation = useSyncMarketDataMutation(false);
 
+  const enrichProfileMutation = useMutation({
+    mutationFn: (assetId: string) => enrichAssetProfile(assetId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.ASSET_DATA, assetId] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.HOLDINGS] });
+      queryClient.invalidateQueries({ queryKey: [QueryKeys.CURRENT_VALUATION] });
+      toast.success(t("asset:profile.refresh_profile_success"));
+    },
+    onError: (error) => {
+      toast.error(t("asset:profile.refresh_profile_failed"), { description: String(error) });
+    },
+  });
+
   // Determine if manual tracking based on asset's quoteMode
   const isManualPricingMode = assetProfile?.quoteMode === "MANUAL";
 
@@ -1066,6 +1085,12 @@ export const AssetProfilePage = () => {
     setRefreshConfirmOpen(true);
   }, []);
 
+  const handleRefreshProfile = useCallback(() => {
+    if (!profile?.id) return;
+    triggerHaptic();
+    enrichProfileMutation.mutate(profile.id);
+  }, [profile?.id, enrichProfileMutation, triggerHaptic]);
+
   const handleBack = useCallback(() => {
     navigate(-1);
   }, [navigate]);
@@ -1178,6 +1203,11 @@ export const AssetProfilePage = () => {
                               },
                             ]
                           : []),
+                        {
+                          icon: Icons.Tag,
+                          label: t("asset:profile.refresh_profile"),
+                          onClick: handleRefreshProfile,
+                        },
                         {
                           icon: Icons.Pencil,
                           label: t("asset:profile.edit"),
@@ -1511,6 +1541,11 @@ export const AssetProfilePage = () => {
                                   },
                                 ]
                               : []),
+                            {
+                              icon: Icons.Tag,
+                              label: t("asset:profile.refresh_profile"),
+                              onClick: handleRefreshProfile,
+                            },
                             {
                               icon: Icons.Pencil,
                               label: t("asset:profile.edit"),

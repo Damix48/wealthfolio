@@ -63,6 +63,9 @@ impl SettingsRepositoryTrait for SettingsRepository {
                 INSIGHTS_OVERVIEW_LAYOUT_KEY => {
                     settings.insights_overview_layout = serde_json::from_str(&value).ok();
                 }
+                "profile_enrichment_interval_hours" => {
+                    settings.profile_enrichment_interval_hours = value.parse().unwrap_or(168);
+                }
                 _ => {} // Ignore unknown settings
             }
         }
@@ -196,6 +199,18 @@ impl SettingsRepositoryTrait for SettingsRepository {
                     tx.update(&AppPreferenceDB(&row))?;
                 }
 
+                if let Some(profile_enrichment_interval_hours) =
+                    settings.profile_enrichment_interval_hours
+                {
+                    diesel::replace_into(app_settings)
+                        .values(&AppSettingDB {
+                            setting_key: "profile_enrichment_interval_hours".to_string(),
+                            setting_value: profile_enrichment_interval_hours.to_string(),
+                        })
+                        .execute(tx.conn())
+                        .map_err(StorageError::from)?;
+                }
+
                 Ok(())
             })
             .await
@@ -222,6 +237,7 @@ impl SettingsRepositoryTrait for SettingsRepository {
                     "menu_bar_visible" => "true",
                     "sync_enabled" => "true",
                     "default_return_metric" => "twr",
+                    "profile_enrichment_interval_hours" => "168",
                     _ => return Err(StorageError::from(diesel::result::Error::NotFound).into()),
                 };
                 Ok(default_value.to_string())

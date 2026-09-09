@@ -4,6 +4,8 @@
 
 use std::sync::Arc;
 
+use wealthfolio_core::settings::SettingsServiceTrait;
+
 #[cfg(feature = "connect-sync")]
 use tokio::time::{interval, Duration};
 #[cfg(not(feature = "connect-sync"))]
@@ -198,6 +200,27 @@ pub fn start_background_workers(state: Arc<AppState>) {
     // Periodic market data sync plus portfolio update (6h interval, 2min
     // initial delay): the coordinator rebuilds whatever the sync made stale.
     let worker = crate::api::shared::spawn_periodic_update(state.clone());
+    state
+        .workers
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
+        .push(worker);
+
+    // Periodic asset profile enrichment (configurable interval, 5min initial delay).
+    let interval_hours = state
+        .settings_service
+        .get_settings()
+        .map(|settings| settings.profile_enrichment_interval_hours.max(1))
+        .unwrap_or(168);
+    let asset_service = state.asset_service.clone();
+    let worker = tokio::spawn(async move {
+        wealthfolio_core::assets::run_periodic_profile_enrichment(
+            asset_service,
+            std::time::Duration::from_secs(300),
+            std::time::Duration::from_secs(interval_hours as u64 * 3600),
+        )
+        .await;
+    });
     state
         .workers
         .lock()

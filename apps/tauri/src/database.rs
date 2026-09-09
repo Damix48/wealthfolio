@@ -1236,6 +1236,22 @@ fn start_workers(
             handle.clone(),
             Arc::clone(context),
         ));
+
+        // Periodic asset profile enrichment (configurable interval, 5min delay).
+        let enrichment_interval_hours = context
+            .settings_service()
+            .get_settings()
+            .map(|settings| settings.profile_enrichment_interval_hours.max(1))
+            .unwrap_or(168);
+        let enrichment_context = Arc::clone(context);
+        workers.push(tauri::async_runtime::spawn(async move {
+            wealthfolio_core::assets::run_periodic_profile_enrichment(
+                enrichment_context.asset_service(),
+                Duration::from_secs(300),
+                Duration::from_secs(enrichment_interval_hours as u64 * 3600),
+            )
+            .await;
+        }));
     }
 
     // Background device sync engine (self-skips when the device is not READY).

@@ -16,6 +16,7 @@ mod auto_classification;
 mod bond_identity;
 mod classification_service;
 pub mod loan;
+mod profile_scheduler;
 
 #[cfg(test)]
 mod assets_model_tests;
@@ -61,3 +62,4 @@ pub(crate) use bond_identity::resolve_bond_aliases;
 pub use classification_service::{
     AssetClassificationService, AssetClassifications, CategoryWithWeight,
 };
+pub use profile_scheduler::run_periodic_profile_enrichment;
