@@ -27,6 +27,7 @@ pub mod amfi;
 pub mod boerse_frankfurt;
 pub mod finnhub;
 pub mod fixture;
+pub mod just_etf;
 pub mod marketdata_app;
 pub mod metal_price_api;
 pub mod moex;
