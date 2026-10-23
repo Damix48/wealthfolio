@@ -988,7 +988,18 @@
       "etfs": "ETF",
       "funds": "펀드",
       "bonds": "채권"
-    }
+    },
+    "priority_decrease": "우선순위 숫자 낮추기",
+    "priority_increase": "우선순위 숫자 높이기",
+    "profile_enrichment": "프로필 보강",
+    "profile_enrichment_subtitle": "시장 데이터 제공업체에서 자산 분류(산업, 지역, 자산 클래스)를 새로고침하는 빈도입니다. 변경 사항은 앱을 다시 시작한 후 적용됩니다.",
+    "profile_enrichment_every_day": "매일",
+    "profile_enrichment_every_3_days": "3일마다",
+    "profile_enrichment_every_7_days": "7일마다",
+    "profile_enrichment_every_14_days": "14일마다",
+    "profile_enrichment_every_30_days": "30일마다",
+    "profile_enrichment_saved": "프로필 보강 빈도를 업데이트했습니다.",
+    "profile_enrichment_save_error": "프로필 보강 빈도를 업데이트하지 못했습니다."
   },
   "addon_permission_none_detected": "감지된 데이터 접근 권한이 없습니다. 이 애드온은 시스템 접근 권한이 최소한인 것으로 보입니다.",
   "addon_permission_list_title": "권한",

@@ -1027,7 +1027,18 @@
       "etfs": "ETF",
       "funds": "Fundos",
       "bonds": "Títulos"
-    }
+    },
+    "priority_decrease": "Diminuir o número de prioridade",
+    "priority_increase": "Aumentar o número de prioridade",
+    "profile_enrichment": "Enriquecimento de perfil",
+    "profile_enrichment_subtitle": "Com que frequência as classificações dos ativos (setores, regiões, classes de ativos) são atualizadas a partir dos provedores de dados de mercado. As alterações têm efeito após reiniciar o aplicativo.",
+    "profile_enrichment_every_day": "Todos os dias",
+    "profile_enrichment_every_3_days": "A cada 3 dias",
+    "profile_enrichment_every_7_days": "A cada 7 dias",
+    "profile_enrichment_every_14_days": "A cada 14 dias",
+    "profile_enrichment_every_30_days": "A cada 30 dias",
+    "profile_enrichment_saved": "Frequência de enriquecimento de perfil atualizada.",
+    "profile_enrichment_save_error": "Falha ao atualizar a frequência de enriquecimento de perfil."
   },
   "addon_permission_none_detected": "Nenhuma permissão de acesso a dados detectada. Esta extensão parece ter acesso mínimo ao sistema.",
   "addon_permission_list_title": "Permissões",

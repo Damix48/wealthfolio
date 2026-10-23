@@ -876,7 +876,10 @@
     "type": "النوع",
     "update_price": "تحديث السعر",
     "update_value": "تحديث القيمة",
-    "valuation": "التقييم"
+    "valuation": "التقييم",
+    "refresh_profile": "تحديث الملف التعريفي",
+    "refresh_profile_success": "تم تحديث الملف التعريفي للأصل بنجاح.",
+    "refresh_profile_failed": "تعذّر تحديث الملف التعريفي للأصل."
   },
   "quickAdd": {
     "add_liability": "إضافة التزام",

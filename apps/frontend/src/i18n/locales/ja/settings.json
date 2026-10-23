@@ -988,7 +988,18 @@
       "etfs": "ETF",
       "funds": "投資信託",
       "bonds": "債券"
-    }
+    },
+    "priority_decrease": "優先度の数値を下げる",
+    "priority_increase": "優先度の数値を上げる",
+    "profile_enrichment": "プロフィールの拡充",
+    "profile_enrichment_subtitle": "市場データプロバイダーから資産の分類（業種、地域、資産クラス）を更新する頻度です。変更はアプリの再起動後に反映されます。",
+    "profile_enrichment_every_day": "毎日",
+    "profile_enrichment_every_3_days": "3日ごと",
+    "profile_enrichment_every_7_days": "7日ごと",
+    "profile_enrichment_every_14_days": "14日ごと",
+    "profile_enrichment_every_30_days": "30日ごと",
+    "profile_enrichment_saved": "プロフィール拡充の頻度を更新しました。",
+    "profile_enrichment_save_error": "プロフィール拡充の頻度の更新に失敗しました。"
   },
   "addon_permission_none_detected": "データへのアクセス権限は検出されませんでした。このアドオンのシステムアクセスは最小限のようです。",
   "addon_permission_list_title": "権限",

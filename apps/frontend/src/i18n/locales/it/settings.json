@@ -1027,7 +1027,18 @@
       "etfs": "ETF",
       "funds": "Fondi",
       "bonds": "Obbligazioni"
-    }
+    },
+    "priority_decrease": "Riduci il numero di priorità",
+    "priority_increase": "Aumenta il numero di priorità",
+    "profile_enrichment": "Arricchimento del profilo",
+    "profile_enrichment_subtitle": "Frequenza con cui le classificazioni degli asset (settori, regioni, classi di attività) vengono aggiornate dai fornitori di dati di mercato. Le modifiche hanno effetto dopo il riavvio dell'app.",
+    "profile_enrichment_every_day": "Ogni giorno",
+    "profile_enrichment_every_3_days": "Ogni 3 giorni",
+    "profile_enrichment_every_7_days": "Ogni 7 giorni",
+    "profile_enrichment_every_14_days": "Ogni 14 giorni",
+    "profile_enrichment_every_30_days": "Ogni 30 giorni",
+    "profile_enrichment_saved": "Frequenza di arricchimento del profilo aggiornata.",
+    "profile_enrichment_save_error": "Impossibile aggiornare la frequenza di arricchimento del profilo."
   },
   "addon_permission_none_detected": "Nessun permesso di accesso ai dati rilevato. Questo add-on sembra avere un accesso minimo al sistema.",
   "addon_permission_list_title": "Permessi",

@@ -231,7 +231,10 @@
       "precious_metal": "貴金属",
       "liability": "負債",
       "other": "その他の資産"
-    }
+    },
+    "refresh_profile": "プロフィールを更新",
+    "refresh_profile_success": "資産プロフィールを更新しました。",
+    "refresh_profile_failed": "資産プロフィールの更新に失敗しました。"
   },
   "editSheet": {
     "moex_symbol_placeholder": "例: SBER, AFLT",

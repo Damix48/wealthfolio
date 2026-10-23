@@ -1420,7 +1420,18 @@
       "etfs": "صناديق ETF",
       "funds": "الصناديق",
       "bonds": "السندات"
-    }
+    },
+    "priority_decrease": "إنقاص رقم الأولوية",
+    "priority_increase": "زيادة رقم الأولوية",
+    "profile_enrichment": "إثراء الملف التعريفي",
+    "profile_enrichment_subtitle": "معدّل تحديث تصنيفات الأصول (القطاعات والمناطق وفئات الأصول) من مزوّدي بيانات السوق. تُطبَّق التغييرات بعد إعادة تشغيل التطبيق.",
+    "profile_enrichment_every_day": "كل يوم",
+    "profile_enrichment_every_3_days": "كل 3 أيام",
+    "profile_enrichment_every_7_days": "كل 7 أيام",
+    "profile_enrichment_every_14_days": "كل 14 يومًا",
+    "profile_enrichment_every_30_days": "كل 30 يومًا",
+    "profile_enrichment_saved": "تم تحديث معدّل إثراء الملف التعريفي.",
+    "profile_enrichment_save_error": "تعذّر تحديث معدّل إثراء الملف التعريفي."
   },
   "nav": {
     "items": {

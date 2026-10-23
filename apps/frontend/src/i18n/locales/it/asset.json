@@ -231,7 +231,10 @@
       "precious_metal": "Metallo prezioso",
       "liability": "Passività",
       "other": "Altro asset"
-    }
+    },
+    "refresh_profile": "Aggiorna profilo",
+    "refresh_profile_success": "Profilo dell'asset aggiornato correttamente.",
+    "refresh_profile_failed": "Impossibile aggiornare il profilo dell'asset."
   },
   "editSheet": {
     "moex_symbol_placeholder": "ad es. SBER, AFLT",

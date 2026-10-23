@@ -231,7 +231,10 @@
       "precious_metal": "귀금속",
       "liability": "부채",
       "other": "기타 자산"
-    }
+    },
+    "refresh_profile": "프로필 새로고침",
+    "refresh_profile_success": "자산 프로필을 새로고침했습니다.",
+    "refresh_profile_failed": "자산 프로필을 새로고침하지 못했습니다."
   },
   "editSheet": {
     "moex_symbol_placeholder": "예: SBER, AFLT",

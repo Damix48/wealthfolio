@@ -231,7 +231,10 @@
       "precious_metal": "Metal precioso",
       "liability": "Passivo",
       "other": "Outro ativo"
-    }
+    },
+    "refresh_profile": "Atualizar perfil",
+    "refresh_profile_success": "Perfil do ativo atualizado com sucesso.",
+    "refresh_profile_failed": "Falha ao atualizar o perfil do ativo."
   },
   "editSheet": {
     "moex_symbol_placeholder": "ex.: SBER, AFLT",
