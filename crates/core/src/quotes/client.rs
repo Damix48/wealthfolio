@@ -43,8 +43,7 @@ use wealthfolio_market_data::{
     FinnhubProvider, FixtureProvider, JustEtfProvider, MarketDataAppProvider,
     MetalPriceApiProvider, MoexProvider, OpenFigiProvider, ProviderId, ProviderRegistry,
     Quote as MarketQuote, QuoteContext, QuoteIdentifiers, ResolverChain,
-    SearchResult as MarketSearchResult, SplitEvent,
-    UsTreasuryCalcProvider, YahooProvider,
+    SearchResult as MarketSearchResult, SplitEvent, UsTreasuryCalcProvider, YahooProvider,
 };
 
 /// Market data error types.

@@ -156,17 +156,16 @@ impl JustEtfProvider {
     // Search / screener
     // -----------------------------------------------------------------------
 
+    // The GET and the POST must share a cookie session, or justETF answers the
+    // POST with the full HTML page instead of JSON.
     async fn extract_wicket_counter(&self) -> Result<String, MarketDataError> {
         let url = format!("{}/en/search.html?search=ETFS", BASE_URL);
-        let resp =
-            self.client
-                .get(&url)
-                .send()
-                .await
-                .map_err(|e| MarketDataError::ProviderError {
-                    provider: PROVIDER_ID.to_string(),
-                    message: format!("Failed to load search page: {}", e),
-                })?;
+        let resp = self.ajax_client.get(&url).send().await.map_err(|e| {
+            MarketDataError::ProviderError {
+                provider: PROVIDER_ID.to_string(),
+                message: format!("Failed to load search page: {}", e),
+            }
+        })?;
         let html = resp
             .text()
             .await
@@ -214,8 +213,9 @@ impl JustEtfProvider {
         ];
 
         let resp = self
-            .client
+            .ajax_client
             .post(&url)
+            .header(ACCEPT, "application/json")
             .form(&form)
             .send()
             .await
@@ -1114,5 +1114,15 @@ mod tests {
 
         assert_eq!(profile.countries.as_deref(), Some("[]"));
         assert_eq!(profile.sectors.as_deref(), Some("[]"));
+    }
+
+    #[tokio::test]
+    #[ignore = "requires network — run with cargo test -- --ignored just_etf_live"]
+    async fn test_live_search() {
+        let provider = JustEtfProvider::new();
+
+        let results = provider.search("IE000VAHT5T0").await.unwrap();
+
+        assert!(results.iter().any(|r| r.symbol == "IE000VAHT5T0"));
     }
 }
